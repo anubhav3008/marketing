@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Mail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        #navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        #navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        #mail-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        #mailForm {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input,
+        textarea {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+       textarea {
+            height: 500px; /* You can adjust this value as needed */
+        }
+        button {
+            padding: 8px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #successMessage,
+        #loadingMessage {
+            color: green;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="navbar">
+    <a href="index.html">Home</a>
+    <a href="ai.html">AI</a>
+</div>
+<div id="mail-container">
+    <form id="mailForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="body">Body:</label>
+        <textarea id="body" name="body" required></textarea>
+
+        <button type="button" onclick="sendMail()">Send Mail</button>
+    </form>
+
+    <div id="successMessage">
+        Mail sent successfully!
+    </div>
+
+    <div id="loadingMessage">
+        Please wait...
+    </div>
+</div>
+
+<script>
+        function sendMail() {
+            const title = document.getElementById('title').value;
+            const body = document.getElementById('body').value;
+
+            const data = {
+                title: title,
+                body: body
+            };
+
+            // Display "Please wait..." message
+            document.getElementById('loadingMessage').style.display = 'block';
+
+            fetch('/mails/', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(json => {
+                console.log('Mail sent successfully:', json);
+                // Hide "Please wait..." message
+                document.getElementById('loadingMessage').style.display = 'none';
+                // Display success message
+                document.getElementById('successMessage').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                // You can handle errors here
+                // Hide "Please wait..." message
+                document.getElementById('loadingMessage').style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
