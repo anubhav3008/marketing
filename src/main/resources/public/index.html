@@ -97,16 +97,6 @@
             height: 450px; /* You can adjust this value as needed */
         }
 
-        .user-request-input {
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .user-request-input label {
-            margin-right: 10px;
-        }
-
         button {
             padding: 8px;
             background-color: #4CAF50;
@@ -142,7 +132,6 @@
         <label for="body">Body:</label>
         <textarea id="body" name="body" required></textarea>
 
-        <div class="user-request-input">
             <label for="minAge">Min Age:</label>
             <input type="number" id="minAge" name="minAge">
 
@@ -163,7 +152,6 @@
                 <option value="Premium">Premium</option>
                 <option value="None">None</option> <!-- Added "None" option -->
             </select>
-        </div>
 
         <button type="button" onclick="sendMail()">Send Mail</button>
     </form>
