@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User and Mail Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        #navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        #navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        #data-container {
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div id="navbar">
+    <a href="index.html">Home</a>
+    <a href="ai.html">AI</a>
+    <a href="analytics.html">Analytics</a>
+</div>
+<div id="data-container">
+    <h2>User Information</h2>
+    <table id="userTable"></table>
+
+    <h2>Mail Analysis</h2>
+    <table id="mailAnalysisTable"></table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        getData('/users/', 'userTable', ['id', 'name', 'email', 'age', 'gender', 'phone', 'category']);
+        getData('/analysis/mails', 'mailAnalysisTable', ['id', 'title', 'sentCount']);
+    });
+
+    async function getData(apiUrl, tableId, columns) {
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': '*/*',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+
+            // Create table
+            const table = document.getElementById(tableId);
+            table.innerHTML = '';
+
+            // Create table header
+            const headerRow = table.insertRow();
+            columns.forEach(column => {
+                const th = document.createElement('th');
+                th.innerHTML = column;
+                headerRow.appendChild(th);
+            });
+
+            // Populate table rows
+            data.forEach(item => {
+                const row = table.insertRow();
+                columns.forEach(column => {
+                    const cell = row.insertCell();
+                    cell.innerHTML = item[column];
+                });
+            });
+
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    }
+</script>
+</body>
+</html>

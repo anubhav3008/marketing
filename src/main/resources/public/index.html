@@ -5,6 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send Mail</title>
     <style>
+        /* Add this style to your existing CSS */
+        select {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            appearance: none; /* Remove default arrow icon on some browsers */
+            background-color: #fff;
+            color: #555;
+        }
+
+        select:hover,
+        select:focus {
+            border-color: #4CAF50;
+        }
+
+        /* Style the dropdown arrow */
+        select::after {
+            content: '\25BC'; /* Unicode character for down arrow */
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #555;
+            pointer-events: none;
+        }
+
+        /* Style the options in the dropdown */
+        select option {
+            background-color: #fff;
+            color: #555;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -32,7 +67,6 @@
         }
 
         #mail-container {
-            max-width: 600px;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
@@ -59,9 +93,20 @@
             box-sizing: border-box;
         }
 
-       textarea {
-            height: 500px; /* You can adjust this value as needed */
+        textarea {
+            height: 450px; /* You can adjust this value as needed */
         }
+
+        .user-request-input {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-request-input label {
+            margin-right: 10px;
+        }
+
         button {
             padding: 8px;
             background-color: #4CAF50;
@@ -87,6 +132,7 @@
 <div id="navbar">
     <a href="index.html">Home</a>
     <a href="ai.html">AI</a>
+    <a href="analytics.html">Analytics</a>
 </div>
 <div id="mail-container">
     <form id="mailForm">
@@ -95,6 +141,29 @@
 
         <label for="body">Body:</label>
         <textarea id="body" name="body" required></textarea>
+
+        <div class="user-request-input">
+            <label for="minAge">Min Age:</label>
+            <input type="number" id="minAge" name="minAge">
+
+            <label for="maxAge">Max Age:</label>
+            <input type="number" id="maxAge" name="maxAge">
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+                <option value="None">None</option>
+            </select>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option value="Regular">Regular</option>
+                <option value="Premium">Premium</option>
+                <option value="None">None</option> <!-- Added "None" option -->
+            </select>
+        </div>
 
         <button type="button" onclick="sendMail()">Send Mail</button>
     </form>
@@ -109,46 +178,56 @@
 </div>
 
 <script>
-        function sendMail() {
-            const title = document.getElementById('title').value;
-            const body = document.getElementById('body').value;
+    function sendMail() {
+        const title = document.getElementById('title').value;
+        const body = document.getElementById('body').value;
+        const minAge = document.getElementById('minAge').value;
+        const maxAge = document.getElementById('maxAge').value;
+        const gender = document.getElementById('gender').value === "None" ? null : document.getElementById('gender').value;
+        const category = document.getElementById('category').value === "None" ? null : document.getElementById('category').value;
 
-            const data = {
-                title: title,
-                body: body
-            };
+        const data = {
+            title: title,
+            body: body,
+            userRequest: {
+                minAge: parseInt(minAge),
+                maxAge: parseInt(maxAge),
+                gender: gender,
+                category: category
+            }
+        };
 
-            // Display "Please wait..." message
-            document.getElementById('loadingMessage').style.display = 'block';
+        // Display "Please wait..." message
+        document.getElementById('loadingMessage').style.display = 'block';
 
-            fetch('/mails/', {
-                method: 'POST',
-                headers: {
-                    'Accept': '*/*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(json => {
-                console.log('Mail sent successfully:', json);
-                // Hide "Please wait..." message
-                document.getElementById('loadingMessage').style.display = 'none';
-                // Display success message
-                document.getElementById('successMessage').style.display = 'block';
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                // You can handle errors here
-                // Hide "Please wait..." message
-                document.getElementById('loadingMessage').style.display = 'none';
-            });
-        }
-    </script>
+        fetch('/mails/', {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(json => {
+            console.log('Mail sent successfully:', json);
+            // Hide "Please wait..." message
+            document.getElementById('loadingMessage').style.display = 'none';
+            // Display success message
+            document.getElementById('successMessage').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            // You can handle errors here
+            // Hide "Please wait..." message
+            document.getElementById('loadingMessage').style.display = 'none';
+        });
+    }
+</script>
 </body>
 </html>
