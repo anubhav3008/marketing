@@ -2,15 +2,17 @@ package com.anubhav.models;
 
 import java.util.UUID;
 
-public class MailAudit {
+public class CommunicationAudit {
     UUID id;
     String title;
     Integer sentCount;
+    CommunicationType communicationType;
 
-    public MailAudit(UUID id, String title, Integer sentCount) {
+    public CommunicationAudit(UUID id, String title, Integer sentCount, CommunicationType communicationType) {
         this.id = id;
         this.title = title;
         this.sentCount = sentCount;
+        this.communicationType = communicationType;
     }
 
     public UUID getId() {
@@ -35,5 +37,13 @@ public class MailAudit {
 
     public void setSentCount(Integer sentCount) {
         this.sentCount = sentCount;
+    }
+
+    public CommunicationType getCommunicationType() {
+        return communicationType;
+    }
+
+    public void setCommunicationType(CommunicationType communicationType) {
+        this.communicationType = communicationType;
     }
 }

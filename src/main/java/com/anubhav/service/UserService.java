@@ -42,23 +42,23 @@ public class UserService {
     public List<User> getAllUsers(){
         List<User> users = new ArrayList<>();
         users.add(new User(1, "Anubhav Shrivastava", "anubhav.workemail@gmail.com", 32, Gender.M,
-                "+918588888888", Category.Premium));
+                "918588888888", Category.Premium));
         users.add(new User(2, "Sita Shrivastava", "anubhav.workemail@gmail.com", 21, Gender.F,
-                "+918588888888", Category.Premium));
+                "918588888888", Category.Premium));
         users.add(new User(3, "Vijay Shrivastava", "anubhav.workemail@gmail.com", 20, Gender.M,
-                "+918588888888", Category.Premium));
+                "918588888888", Category.Premium));
         users.add(new User(4, "Gita Sharma", "anubhav.workemail@gmail.com", 39, Gender.F,
-                "+918588888888", Category.Premium));
+                "918588888888", Category.Premium));
         users.add(new User(5, "Anubhav Shrivastava", "anubhav.workemail@gmail.com", 22, Gender.M,
-                "+918588888888", Category.Regular));
+                "918588888888", Category.Regular));
         users.add(new User(6, "Rita Shukla", "anubhav.workemail@gmail.com", 28, Gender.F,
-                "+918588888888", Category.Regular));
+                "918588888888", Category.Regular));
         users.add(new User(7, "Anubhav Shrivastava", "anubhav.workemail@gmail.com", 67, Gender.M,
-                "+918588888888", Category.Regular));
+                "918588888888", Category.Regular));
         users.add(new User(8, "Sudha Singh", "anubhav.workemail@gmail.com", 69, Gender.F,
-                "+918588888888", Category.Regular));
+                "918588888888", Category.Regular));
         users.add(new User(9, "Akash Shrivastava", "anubhav.workemail@gmail.com", 53, Gender.O,
-                "+918588888888", Category.Regular));
+                "918588876192", Category.Regular));
 
         return users;
     }

@@ -1,13 +1,22 @@
 package com.anubhav.models;
 
 
-public class MailRequest {
+public class CommunicationRequest {
     private String body;
     private String title;
+    private CommunicationType communicationType;
     private UserRequest userRequest;
 
     public UserRequest getUserRequest() {
         return userRequest;
+    }
+
+    public CommunicationType getCommunicationType() {
+        return communicationType;
+    }
+
+    public void setCommunicationType(CommunicationType communicationType) {
+        this.communicationType = communicationType;
     }
 
     public void setUserRequest(UserRequest userRequest) {

@@ -1,7 +1,7 @@
 package com.anubhav.controller;
 
-import com.anubhav.models.MailAudit;
-import com.anubhav.service.MailAuditService;
+import com.anubhav.models.CommunicationAudit;
+import com.anubhav.service.CommunicationAuditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +14,10 @@ import java.util.List;
 public class AnalyticsController {
 
     @Autowired
-    private MailAuditService mailAuditService;
+    private CommunicationAuditService communicationAuditService;
 
     @GetMapping("/mails")
-    public List<MailAudit> getMailAudits(){
-        return this.mailAuditService.getMailAudits();
+    public List<CommunicationAudit> getMailAudits(){
+        return this.communicationAuditService.getMailAudits();
     }
 }

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Mail</title>
+    <style>
+        /* Add this style to your existing CSS */
+        select {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            appearance: none; /* Remove default arrow icon on some browsers */
+            background-color: #fff;
+            color: #555;
+        }
+
+        select:hover,
+        select:focus {
+            border-color: #4CAF50;
+        }
+
+        /* Style the dropdown arrow */
+        select::after {
+            content: '\25BC'; /* Unicode character for down arrow */
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #555;
+            pointer-events: none;
+        }
+
+        /* Style the options in the dropdown */
+        select option {
+            background-color: #fff;
+            color: #555;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        #navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        #navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        #mail-container {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        #mailForm {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input,
+        textarea {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 400px; /* You can adjust this value as needed */
+        }
+
+        button {
+            padding: 8px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #successMessage,
+        #loadingMessage {
+            color: green;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="navbar">
+    <a href="index.html">Generate</a>
+    <a href="communicate.html">Communicate</a>
+    <a href="analytics.html">Analyze</a>
+</div>
+<div id="mail-container">
+    <form id="mailForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="body">Body:</label>
+        <textarea id="body" name="body" required></textarea>
+
+            <label for="minAge">Min Age:</label>
+            <input type="number" id="minAge" name="minAge">
+
+            <label for="maxAge">Max Age:</label>
+            <input type="number" id="maxAge" name="maxAge">
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+                <option value="None">None</option>
+            </select>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option value="Regular">Regular</option>
+                <option value="Premium">Premium</option>
+                <option value="None">None</option> <!-- Added "None" option -->
+            </select>
+
+        <label for="communicationType">Communication type:</label>
+        <select id="communicationType" name="communicationType" required>
+            <option value="SMS">SMS</option>
+            <option value="Email">Email</option>
+        </select>
+
+        <button type="button" onclick="sendMail()">Send Mail</button>
+    </form>
+
+    <div id="successMessage">
+        Communication sent!
+    </div>
+
+    <div id="loadingMessage">
+        Please wait...
+    </div>
+</div>
+
+<script>
+    function sendMail() {
+        const title = document.getElementById('title').value;
+        const body = document.getElementById('body').value;
+        const minAge = document.getElementById('minAge').value;
+        const maxAge = document.getElementById('maxAge').value;
+        const gender = document.getElementById('gender').value === "None" ? null : document.getElementById('gender').value;
+        const category = document.getElementById('category').value === "None" ? null : document.getElementById('category').value;
+        const communicationType = document.getElementById('communicationType').value
+        const data = {
+            title: title,
+            body: body,
+            userRequest: {
+                minAge: parseInt(minAge),
+                maxAge: parseInt(maxAge),
+                gender: gender,
+                category: category,
+                communicationType:communicationType
+            }
+        };
+
+        // Display "Please wait..." message
+        document.getElementById('loadingMessage').style.display = 'block';
+
+        fetch('/communicate/', {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(json => {
+            console.log('Mail sent successfully:', json);
+            // Hide "Please wait..." message
+            document.getElementById('loadingMessage').style.display = 'none';
+            // Display success message
+            document.getElementById('successMessage').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            // You can handle errors here
+            // Hide "Please wait..." message
+            document.getElementById('loadingMessage').style.display = 'none';
+        });
+    }
+</script>
+</body>
+</html>
