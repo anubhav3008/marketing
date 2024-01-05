@@ -1,6 +1,6 @@
 package com.anubhav.service;
 
-import com.anubhav.models.SimulationRequest;
+import com.anubhav.models.EventRequest;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventData;
 import com.google.gson.Gson;
@@ -24,11 +24,11 @@ public class EventHubClient {
         this.gson = new Gson();
 
     }
-    public void send(SimulationRequest simulationRequest, int count){
+    public void send(EventRequest eventRequest, int count){
         try (var producerClient = eventHubClientBuilder.buildProducerClient()) {
             // Create a batch
             for(int i =0;i<count;i++){
-                EventData eventData = new EventData(this.gson.toJson(simulationRequest));
+                EventData eventData = new EventData(this.gson.toJson(eventRequest));
                 // Send the batch to the event hub
                 producerClient.send(Collections.singleton(eventData));
                 System.out.println("Message sent successfully!");

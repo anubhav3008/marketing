@@ -1,8 +1,6 @@
 package com.anubhav.service;
 
-import com.anubhav.models.CommunicationAudit;
-import com.anubhav.models.CommunicationRequest;
-import com.anubhav.models.CommunicationType;
+import com.anubhav.models.*;
 import com.vonage.client.VonageClient;
 import com.vonage.client.sms.MessageStatus;
 import com.vonage.client.sms.SmsSubmissionResponse;
@@ -22,6 +20,9 @@ public class SmsService {
 
     @Autowired
     private CommunicationAuditService communicationAuditService;
+
+    @Autowired
+    EventHubClient eventHubClient;
 
     public SmsService(){
         String apiKey = System.getenv("SmsApiKey");
@@ -50,7 +51,11 @@ public class SmsService {
             }
         }
         communicationAuditService.addAudit(new CommunicationAudit(UUID.randomUUID(), communicationRequest.getTitle(),success, CommunicationType.SMS));
-
+        EventRequest eventRequest = new EventRequest();
+        eventRequest.setCount(users.size());
+        eventRequest.setCommunicationType(CommunicationType.SMS);
+        eventRequest.setEventType(EventType.Sent);
+        this.eventHubClient.send(eventRequest, 1);
         return true;
 
     }

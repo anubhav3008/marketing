@@ -1,6 +1,6 @@
 package com.anubhav.models;
 
-public class SimulationRequest {
+public class EventRequest {
     CommunicationType communicationType;
     int count;
     EventType eventType;

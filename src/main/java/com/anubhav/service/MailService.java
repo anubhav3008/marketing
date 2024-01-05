@@ -1,8 +1,6 @@
 package com.anubhav.service;
 
-import com.anubhav.models.CommunicationAudit;
-import com.anubhav.models.CommunicationRequest;
-import com.anubhav.models.CommunicationType;
+import com.anubhav.models.*;
 import com.azure.communication.email.*;
 import com.azure.communication.email.models.*;
 import com.azure.core.util.polling.SyncPoller;
@@ -20,10 +18,11 @@ public class MailService {
     @Autowired
     CommunicationAuditService communicationAuditService;
 
+    @Autowired
+    EventHubClient eventHubClient;
+
     public boolean sendmail(CommunicationRequest communicationRequest){
-        // You can get your connection string from your resource in the Azure portal.
-        // String connectionString = System.getenv("EmailConnectionString");
-        String connectionString = "endpoint=https://communicationserviceanubhav.unitedstates.communication.azure.com/;accesskey=9hDPRH+MKc/hFjuINoJ3aV1USNGrl0ldjO1vmniO3Yqx0oFSYpPNxT4u5Mz4TjCisdUZ8uOdL9apDl0OLwFbSA==";
+        String connectionString = System.getenv("EmailConnectionString");
         EmailClient emailClient = new EmailClientBuilder().connectionString(connectionString).buildClient();
 
         var users = this.userService.getUsers(communicationRequest.getUserRequest());
@@ -40,7 +39,11 @@ public class MailService {
         });
 
         communicationAuditService.addAudit(new CommunicationAudit(UUID.randomUUID(), communicationRequest.getTitle(),users.size(), CommunicationType.Email));
-
+        EventRequest eventRequest = new EventRequest();
+        eventRequest.setCount(users.size());
+        eventRequest.setCommunicationType(CommunicationType.Email);
+        eventRequest.setEventType(EventType.Sent);
+        this.eventHubClient.send(eventRequest, 1);
         return true;
     }
 }
