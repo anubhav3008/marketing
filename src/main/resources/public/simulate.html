@@ -161,7 +161,7 @@
             // Set status to "Waiting for result"
             statusMessage.textContent = 'Waiting for result...';
 
-            const response = await fetch(`/simulate/?count=${countParam}`, {
+            const response = await fetch(`/event/?count=${countParam}`, {
                 method: 'POST',
                 headers: {
                     'accept': '*/*',

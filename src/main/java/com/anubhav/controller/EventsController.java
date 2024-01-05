@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/simulate")
-public class SimulationController {
+@RequestMapping("/event")
+public class EventsController {
 
     @Autowired
     EventHubClient eventHubClient;

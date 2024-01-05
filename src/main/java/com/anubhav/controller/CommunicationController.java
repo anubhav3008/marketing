@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/communicate")
-public class Mails {
+public class CommunicationController {
 
     @Autowired
     private MailService mailService;
