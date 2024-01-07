@@ -175,13 +175,19 @@
 
 <script>
     function sendMail() {
+
         const title = document.getElementById('title').value;
-        const body = document.getElementById('body').value;
+        let body = document.getElementById('body').value;
+
         const minAge = document.getElementById('minAge').value;
         const maxAge = document.getElementById('maxAge').value;
         const gender = document.getElementById('gender').value === "None" ? null : document.getElementById('gender').value;
         const category = document.getElementById('category').value === "None" ? null : document.getElementById('category').value;
         const communicationType = document.getElementById('communicationType').value
+        if(communicationType == 'Email')
+        {
+             body = body.replace(/\n/g, '<br>'); // Replace \n with <br> for line breaks
+        }
         const data = {
             title: title,
             body: body,

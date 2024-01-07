@@ -33,7 +33,7 @@ public class MailService {
                     .setSenderAddress("DoNotReply@a2463183-1387-4d24-ab7e-084c3752d1ea.azurecomm.net")
                     .setToRecipients(toAddress)
                     .setSubject(communicationRequest.getTitle())
-                    .setBodyPlainText(communicationRequest.getBody());
+                    .setBodyHtml(communicationRequest.getBody());
             SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(emailMessage, null);
             poller.waitForCompletion();
         });
