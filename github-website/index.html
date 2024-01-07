@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>
+Tracking clicks by users/events
+</h2>
+
+Following url will be sent to customers, and they can click on the url to track : <br>
+<a href="https://anubhav-sales.azurewebsites.net/event/?communicationType=Email&eventType=Clicked&url=https://traya.health">https://anubhav-sales.azurewebsites.net/event/?communicationType=Email&eventType=Clicked&url=https://traya.health</a>
+<br>
+
+<h3>
+    Param breakdown
+</h3>
+<table>
+    <tr>
+        <th>Parameter/component</th>
+        <th>use case</th>
+    </tr>
+    <tr>
+        <td>https://anubhav-sales.azurewebsites.net/event/</td>
+        <td>API for tracking events</td>
+    </tr>
+    <tr>
+        <td>communicationType</td>
+        <td>SMS/Email</td>
+    </tr>
+    <tr>
+        <td>Event type</td>
+        <td>Sent, Clicked, Opened, Bounced, Bought</td>
+    </tr>
+    <tr>
+        <td>url</td>
+        <td>https://traya.health</td>
+    </tr>
+</table>
+</body>
