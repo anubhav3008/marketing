@@ -174,6 +174,29 @@
 </div>
 
 <script>
+    function modifyHyperlinks(inputHTML, communicationType) {
+        // Create a temporary element to parse the HTML
+        let tempElement = document.createElement('div');
+        tempElement.innerHTML = inputHTML;
+
+        // Find all anchor elements
+        let anchorElements = tempElement.getElementsByTagName('a');
+
+        // Loop through each anchor element and update the href attribute
+        for (let i = 0; i < anchorElements.length; i++) {
+            let href = anchorElements[i].getAttribute('href');
+            if (href && href.startsWith('https://')) {
+                anchorElements[i].setAttribute(
+                    'href',
+                    `https://anubhav-sales.azurewebsites.net/event/?communicationType=${communicationType}&eventType=Clicked&url=${encodeURIComponent(href)}`
+            );
+        }
+    }
+
+    // Get the modified HTML
+    return tempElement.innerHTML;
+    }
+
     function sendMail() {
 
         const title = document.getElementById('title').value;
@@ -184,9 +207,16 @@
         const gender = document.getElementById('gender').value === "None" ? null : document.getElementById('gender').value;
         const category = document.getElementById('category').value === "None" ? null : document.getElementById('category').value;
         const communicationType = document.getElementById('communicationType').value
+        let hyperlinkRegex = /https:\/\/\S+/g;
         if(communicationType == 'Email')
         {
              body = body.replace(/\n/g, '<br>'); // Replace \n with <br> for line breaks
+             body = modifyHyperlinks(body, 'Email');
+        }
+        else{
+            body = body.replace(hyperlinkRegex, function(match) {
+                    return `https://anubhav-sales.azurewebsites.net/event/?communicationType=SMS&eventType=Clicked&url=${encodeURIComponent(match)}`;
+             });
         }
         const data = {
             title: title,
